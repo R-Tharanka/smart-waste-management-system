@@ -54,7 +54,16 @@ export async function fetchAnalyticsConfig() {
       );
     }
 
-    return data.filters;
+    // The backend returns a standard envelope: { ok, data: { filters }, message }
+    // Be resilient to minor shape differences and unwrap accordingly.
+    const payload = data?.data ?? data;
+    const config = payload?.filters ?? payload;
+
+    if (!config || typeof config !== 'object') {
+      throw new ApiError(ERROR_MESSAGES.CONFIG_LOAD_FAILED, response.status, data);
+    }
+
+    return config;
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;
