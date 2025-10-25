@@ -7,7 +7,7 @@
  * @component
  */
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -104,28 +104,34 @@ function ReportFilters({
             </Typography>
           </Stack>
         ) : (
-          <Stack component="form" spacing={4} onSubmit={handleSubmit}>
+          <Stack
+            component="form"
+            spacing={4}
+            onSubmit={handleSubmit}
+            alignItems="center"
+            sx={{ width: '100%' }}
+          >
             {/* Filter inputs */}
-            <Grid container spacing={3}>
+            <Grid container spacing={3} justifyContent="center" sx={{ width: '100%' }}>
               {/* Date range inputs */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} sx={{ maxWidth: 260, width: '100%' }}>
                 <TextField
                   label="From"
                   name="from"
                   type="date"
-                  value={filters.from}
+                  value={filters.from || ''}
                   onChange={handleChange}
                   required
                   fullWidth
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} sx={{ maxWidth: 260, width: '100%' }}>
                 <TextField
                   label="To"
                   name="to"
                   type="date"
-                  value={filters.to}
+                  value={filters.to || ''}
                   onChange={handleChange}
                   required
                   fullWidth
@@ -134,19 +140,22 @@ function ReportFilters({
               </Grid>
 
               {/* Regions filter */}
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
+              <Grid item xs={12} md={6} sx={{ maxWidth: 560, width: '100%' }}>
+                <FormControl fullWidth sx={{ minWidth: 160 }}>
                   <InputLabel id="regions-label">Regions</InputLabel>
                   <Select
                     labelId="regions-label"
                     label="Regions"
                     name="regions"
                     multiple
-                    value={filters.regions}
+                    value={filters.regions || []}
                     onChange={handleChange}
-                    renderValue={(selected) =>
-                      selected.length ? selected.join(', ') : 'All regions'
-                    }
+                    renderValue={(selected) => (selected && selected.length ? selected.join(', ') : 'All regions')}
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
                   >
                     {(config?.regions || []).map((region) => (
                       <MenuItem key={region} value={region}>
@@ -158,19 +167,22 @@ function ReportFilters({
               </Grid>
 
               {/* Waste types filter */}
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
+              <Grid item xs={12} md={6} sx={{ maxWidth: 560, width: '100%' }}>
+                <FormControl fullWidth sx={{ minWidth: 160 }}>
                   <InputLabel id="wasteTypes-label">Waste type</InputLabel>
                   <Select
                     labelId="wasteTypes-label"
                     label="Waste type"
                     name="wasteTypes"
                     multiple
-                    value={filters.wasteTypes}
+                    value={filters.wasteTypes || []}
                     onChange={handleChange}
-                    renderValue={(selected) =>
-                      selected.length ? selected.join(', ') : 'All types'
-                    }
+                    renderValue={(selected) => (selected && selected.length ? selected.join(', ') : 'All types')}
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
                   >
                     {(config?.wasteTypes || []).map((wasteType) => (
                       <MenuItem key={wasteType} value={wasteType}>
@@ -182,19 +194,22 @@ function ReportFilters({
               </Grid>
 
               {/* Billing models filter */}
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
+              <Grid item xs={12} md={6} sx={{ maxWidth: 560, width: '100%' }}>
+                <FormControl fullWidth sx={{ minWidth: 160 }}>
                   <InputLabel id="billingModels-label">Billing model</InputLabel>
                   <Select
                     labelId="billingModels-label"
                     label="Billing model"
                     name="billingModels"
                     multiple
-                    value={filters.billingModels}
+                    value={filters.billingModels || []}
                     onChange={handleChange}
-                    renderValue={(selected) =>
-                      selected.length ? selected.join(', ') : 'All models'
-                    }
+                    renderValue={(selected) => (selected && selected.length ? selected.join(', ') : 'All models')}
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
                   >
                     {(config?.billingModels || []).map((model) => (
                       <MenuItem key={model} value={model}>
@@ -207,7 +222,7 @@ function ReportFilters({
             </Grid>
 
             {/* Submit button and visibility toggles */}
-            <Stack direction="row" flexWrap="wrap" spacing={3} alignItems="center">
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center" justifyContent="center" sx={{ width: '100%' }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -236,6 +251,7 @@ function ReportFilters({
                         {item.label}
                       </Typography>
                     }
+                    sx={{ mr: 0 }}
                   />
                 ))}
               </Stack>
